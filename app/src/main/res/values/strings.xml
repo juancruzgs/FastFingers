@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FastFingers</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="text_view_presentation">Do you think you have the fastest fingers?</string>
+    <string name="button_normal">Normal</string>
+    <string name="button_time_trial">Time Trial</string>
+    <string name="button_survival">Survival</string>
+    <string name="button_hardcore">Hardcore</string>
+
+</resources>
