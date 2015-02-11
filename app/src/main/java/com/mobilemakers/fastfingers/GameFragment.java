@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 /**
@@ -25,6 +27,10 @@ public class GameFragment extends Fragment {
         mTextViewTimer = (TextView)rootView.findViewById(R.id.text_view_timer);
         CountDown counter = new CountDown(5000,1000);
         counter.start();
+        EditText editTextWord = (EditText)rootView.findViewById(R.id.edit_text_insert_word);
+        if(editTextWord.requestFocus()) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
         return rootView;
     }
 
