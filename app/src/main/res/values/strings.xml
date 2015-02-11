@@ -9,5 +9,6 @@
     <string name="button_time_trial">Time Trial</string>
     <string name="button_survival">Survival</string>
     <string name="button_hardcore">Hardcore</string>
+    <string name="title_activity_game">FastFingers</string>
 
 </resources>
