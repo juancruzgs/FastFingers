@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="string_array_words">
+        <item>demure</item>
+        <item>deride</item>
+        <item>despot</item>
+        <item>diligent</item>
+        <item>elated</item>
+        <item>eloquent</item>
+        <item>embezzle</item>
+        <item>empathy</item>
+        <item>enmity</item>
+        <item>erudite</item>
+        <item>extol</item>
+        <item>fabricate</item>
+        <item>feral</item>
+        <item>obstreperous</item>
+        <item>contumacious</item>
+        <item>mettlesome</item>
+        <item>feckless</item>
+        <item>consequential</item>
+    </string-array>
+</resources>

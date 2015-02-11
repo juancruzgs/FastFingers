@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Random;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -20,6 +22,8 @@ public class GameFragment extends Fragment {
     TextView mTextViewTimer;
     TextView mTextViewWord;
     CountDown mCounter;
+    Random mRandom;
+    String[] mWords;
 
     public GameFragment() {
     }
@@ -31,7 +35,18 @@ public class GameFragment extends Fragment {
         wireUpViews(rootView);
         startCountDown();
         prepareEditText(rootView);
+        prepareInitialWord();
         return rootView;
+    }
+
+    private void wireUpViews(View rootView) {
+        mTextViewWord = (TextView)rootView.findViewById(R.id.text_view_word);
+        mTextViewTimer = (TextView)rootView.findViewById(R.id.text_view_timer);
+    }
+
+    private void startCountDown() {
+        mCounter = new CountDown(11000,1000);
+        mCounter.start();
     }
 
     private void prepareEditText(View rootView) {
@@ -52,23 +67,29 @@ public class GameFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().equals(mTextViewWord.getText().toString())){
+                if (s.toString().equals(mTextViewWord.getText().toString())) {
                     editTextWord.getText().clear();
-                    mCounter.cancel();
-                    mCounter.start();
+                    restartCountDown();
                 }
             }
         });
     }
 
-    private void wireUpViews(View rootView) {
-        mTextViewWord = (TextView)rootView.findViewById(R.id.text_view_word);
-        mTextViewTimer = (TextView)rootView.findViewById(R.id.text_view_timer);
+    private void restartCountDown() {
+        setTextViewRandomWord();
+        mCounter.cancel();
+        mCounter.start();
     }
 
-    private void startCountDown() {
-        mCounter = new CountDown(5000,1000);
-        mCounter.start();
+    private void prepareInitialWord() {
+        mWords = getResources().getStringArray(R.array.string_array_words);
+        mRandom = new Random();
+        setTextViewRandomWord();
+    }
+
+    private void setTextViewRandomWord() {
+        int position = mRandom.nextInt(mWords.length);
+        mTextViewWord.setText(mWords[position]);
     }
 
     private class CountDown extends CountDownTimer {
