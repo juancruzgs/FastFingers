@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -24,6 +25,7 @@ public class GameFragment extends Fragment {
     CountDown mCounter;
     Random mRandom;
     String[] mWords;
+    int mScore;
 
     public GameFragment() {
     }
@@ -36,6 +38,7 @@ public class GameFragment extends Fragment {
         startCountDown();
         prepareEditText(rootView);
         prepareInitialWord();
+        mScore = 0;
         return rootView;
     }
 
@@ -69,7 +72,10 @@ public class GameFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (s.toString().equals(mTextViewWord.getText().toString())) {
                     editTextWord.getText().clear();
+                    //TODO Calculate score based on time
+                    mScore++;
                     restartCountDown();
+                    //TODO Decrement time (create new countdown)
                 }
             }
         });
@@ -105,8 +111,10 @@ public class GameFragment extends Fragment {
 
         @Override
         public void onFinish() {
-            //TODO You Lose!
+            //TODO You Lose and show score
             mTextViewTimer.setText("Finished");
+            Toast.makeText(getActivity(), String.valueOf(mScore), Toast.LENGTH_LONG).show();
+            mScore = 0;
         }
     }
 }
