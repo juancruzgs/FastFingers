@@ -5,6 +5,7 @@ import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +21,16 @@ import java.util.Random;
  */
 public class GameFragment extends Fragment {
 
+    final static long TOTAL_SCORE_PER_WORD = 11000;
+    final static long COUNT_DOWN_INTERVAL = 100;
+
     TextView mTextViewTimer;
     TextView mTextViewWord;
     CountDown mCounter;
     Random mRandom;
     String[] mWords;
-    int mScore;
+    long mScore;
+    long mScorePerWord;
 
     public GameFragment() {
     }
@@ -48,7 +53,8 @@ public class GameFragment extends Fragment {
     }
 
     private void startCountDown() {
-        mCounter = new CountDown(11000,1000);
+        mScorePerWord = TOTAL_SCORE_PER_WORD;
+        mCounter = new CountDown(TOTAL_SCORE_PER_WORD, COUNT_DOWN_INTERVAL);
         mCounter.start();
     }
 
@@ -73,7 +79,8 @@ public class GameFragment extends Fragment {
                 if (s.toString().equals(mTextViewWord.getText().toString())) {
                     editTextWord.getText().clear();
                     //TODO Calculate score based on time
-                    mScore++;
+                    mScore += mScorePerWord;
+                    Log.d("mScore", String.valueOf(mScore));
                     restartCountDown();
                     //TODO Decrement time (create new countdown)
                 }
@@ -83,6 +90,7 @@ public class GameFragment extends Fragment {
 
     private void restartCountDown() {
         setTextViewRandomWord();
+        mScorePerWord = TOTAL_SCORE_PER_WORD;
         mCounter.cancel();
         mCounter.start();
     }
@@ -107,6 +115,8 @@ public class GameFragment extends Fragment {
         @Override
         public void onTick(long millisUntilFinished) {
             mTextViewTimer.setText(String.valueOf(millisUntilFinished/1000));
+            mScorePerWord =  mScorePerWord - COUNT_DOWN_INTERVAL;
+            Log.d("mScorePerWord", String.valueOf(mScorePerWord));
         }
 
         @Override
