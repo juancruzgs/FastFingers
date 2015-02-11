@@ -115,7 +115,7 @@ public class GameFragment extends Fragment {
         @Override
         public void onTick(long millisUntilFinished) {
             mTextViewTimer.setText(String.valueOf(millisUntilFinished/1000));
-            mScorePerWord =  mScorePerWord - COUNT_DOWN_INTERVAL;
+            mScorePerWord -=  COUNT_DOWN_INTERVAL;
             Log.d("mScorePerWord", String.valueOf(mScorePerWord));
         }
 
@@ -125,6 +125,7 @@ public class GameFragment extends Fragment {
             mTextViewTimer.setText("Finished");
             Toast.makeText(getActivity(), String.valueOf(mScore), Toast.LENGTH_LONG).show();
             mScore = 0;
+            cancel();
         }
     }
 }
