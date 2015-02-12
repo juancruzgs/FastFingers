@@ -6,7 +6,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class GameActivity extends ActionBarActivity {
+public class GameActivity extends ActionBarActivity implements GameFragment.OnTimeIsOverListener, LoseFragment.OnTryAgainListener{
+
+    @Override
+    public void onTimeIsOver(long score) {
+        LoseFragment loseFragment = new LoseFragment();
+        Bundle bundle = new Bundle();
+        bundle.putLong(LoseFragment.SCORE, score);
+        loseFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, loseFragment)
+                .commit();
+    }
+
+    @Override
+    public void onTryAgain() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, new GameFragment())
+                .commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -10,5 +10,7 @@
     <string name="button_survival">Survival</string>
     <string name="button_hardcore">Hardcore</string>
     <string name="title_activity_game">FastFingers</string>
+    <string name="your_score">Your Score: %d</string>
+    <string name="actual_score">Score: %d</string>
 
 </resources>

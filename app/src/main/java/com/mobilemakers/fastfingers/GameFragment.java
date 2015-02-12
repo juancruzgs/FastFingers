@@ -1,5 +1,6 @@
 package com.mobilemakers.fastfingers;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -22,16 +23,39 @@ import java.util.Random;
  */
 public class GameFragment extends Fragment {
 
-    final static long TOTAL_SCORE_PER_WORD = 6000;
+    final static long TOTAL_SCORE_PER_WORD = 4000;
     final static long COUNT_DOWN_INTERVAL = 100;
 
     TextView mTextViewTimer;
     TextView mTextViewWord;
+    TextView mTextViewActualScore;
+    EditText mEditTextWord;
     CountDown mCounter;
     Random mRandom;
     String[] mWords;
     long mScore;
     long mScorePerWord;
+
+    OnTimeIsOverListener mCallback;
+
+    // Container Activity must implement this interface
+    public interface OnTimeIsOverListener {
+        public void onTimeIsOver(long score);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnTimeIsOverListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnTimeIsOverListener");
+        }
+    }
 
     public GameFragment() {
     }
@@ -51,6 +75,7 @@ public class GameFragment extends Fragment {
     private void wireUpViews(View rootView) {
         mTextViewWord = (TextView)rootView.findViewById(R.id.text_view_word);
         mTextViewTimer = (TextView)rootView.findViewById(R.id.text_view_timer);
+        mTextViewActualScore = (TextView)rootView.findViewById(R.id.text_view_actual_score);
     }
 
     private void startCountDown() {
@@ -60,11 +85,11 @@ public class GameFragment extends Fragment {
     }
 
     private void prepareEditText(View rootView) {
-        final EditText editTextWord = (EditText)rootView.findViewById(R.id.edit_text_insert_word);
-        if(editTextWord.requestFocus()) {
-            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        mEditTextWord = (EditText)rootView.findViewById(R.id.edit_text_insert_word);
+        if(mEditTextWord.requestFocus()) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         }
-        editTextWord.addTextChangedListener(new TextWatcher() {
+        mEditTextWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -79,28 +104,24 @@ public class GameFragment extends Fragment {
             public void afterTextChanged(Editable s) {
 
                 if (s.toString().equals(mTextViewWord.getText().toString())) {
-                    editTextWord.getText().clear();
+                    mEditTextWord.getText().clear();
                     mScore += mScorePerWord;
-                    Log.d("mScore", String.valueOf(mScore));
+                    mTextViewActualScore.setText(String.format(getString(R.string.actual_score), mScore));
                     restartCountDown();
-                    //TODO Decrement time (create new countdown)
-                }
-                else
-                {
+                } else {
                     String word = mTextViewWord.getText().toString();
                     String wordToCompare = null;
                     try {
-                        wordToCompare = word.substring(0,s.length());
+                        wordToCompare = word.substring(0, s.length());
                     } catch (Exception e) {
                         //s.length > word.length
-                        editTextWord.setTextColor(Color.parseColor("red"));
+                        mEditTextWord.setTextColor(Color.parseColor("red"));
                     }
 
-                    if (s.toString().equals(wordToCompare)){
-                        editTextWord.setTextColor(Color.parseColor("green"));
-                    }
-                    else {
-                        editTextWord.setTextColor(Color.parseColor("red"));
+                    if (s.toString().equals(wordToCompare)) {
+                        mEditTextWord.setTextColor(Color.parseColor("green"));
+                    } else {
+                        mEditTextWord.setTextColor(Color.parseColor("red"));
                     }
                 }
             }
@@ -144,11 +165,8 @@ public class GameFragment extends Fragment {
 
         @Override
         public void onFinish() {
-            //TODO You Lose and show score
-            mTextViewTimer.setText("You lose");
-            Toast.makeText(getActivity(), String.valueOf(mScore), Toast.LENGTH_LONG).show();
-            mScore = 0;
             cancel();
+            mCallback.onTimeIsOver(mScore);
         }
     }
 }
