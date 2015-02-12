@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_game"
+    tools:context="com.mobilemakers.fastfingers.GameFragment">
+
+    <TextView
+        android:id="@+id/text_view_actual_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/text_view_actual_score"
+        android:textSize="@dimen/text_view_actual_score_text_size"
+        android:textColor="@color/text_view_actual_score"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text_view_word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_view_margin"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/text_view_word"
+        android:textSize="@dimen/text_view_word_text_size"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/text_view_timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/text_view_timer"
+        android:textSize="@dimen/text_view_timer_text_size"
+        android:textStyle="bold"
+        android:textColor="@color/text_view_timer" />
+
+    <EditText
+        android:id="@+id/edit_text_insert_word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_view_margin"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/edit_text_insert_word_text_size"
+        android:textStyle="bold"
+        android:maxLines="1" />
+
+</LinearLayout>

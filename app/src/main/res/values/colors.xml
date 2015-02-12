@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary_main">#607D8B</color>
+    <!--<color name="primary_main">#607D8B</color>-->
+    <color name="primary_main">#9b59b6</color>
     <color name="primary_dark_main">#455A64</color>
     <color name="primary_light_main">#CFD8DC</color>
-    <color name="accent_main">#8BC34A</color>
+    <color name="accent_main">#ffffff</color>
     <color name="primary_text_main">#212121</color>
     <color name="secondary_text_main">#727272</color>
     <color name="icons_main">#FFFFFF</color>
     <color name="divider_main">#B6B6B6</color>
+
+    <color name="text_view_actual_score">#9b59b6</color>
+    <color name="text_view_timer">#FF0000</color>
+    <color name="button_text">#FFFFFF</color>
+    <color name="text_view_mode">#9b59b6</color>
 </resources>

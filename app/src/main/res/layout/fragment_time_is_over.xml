@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:background="@drawable/background_game">
+
+    <TextView
+        android:id="@+id/text_view_time_is_over"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/text_view_time_is_over"
+        android:textSize="@dimen/text_view_time_is_over_text_size"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:id="@+id/text_view_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/text_view_mode"
+        android:textSize="@dimen/text_view_mode_text_size"
+        android:textColor="@color/text_view_mode"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/text_view_your_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/text_view_your_score"
+        android:textSize="@dimen/text_view_your_score_text_size"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:id="@+id/text_view_best"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/text_view_best"
+        android:textSize="@dimen/text_view_best_text_size"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/button_try_again"
+        android:layout_width="@dimen/button_try_again_width"
+        android:layout_height="@dimen/button_try_again_height"
+        android:text="@string/button_try_again"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_background_main"
+        android:layout_marginTop="@dimen/button_try_again_margin_top"
+        android:textSize="@dimen/button_try_again_text_size" />
+</LinearLayout>
