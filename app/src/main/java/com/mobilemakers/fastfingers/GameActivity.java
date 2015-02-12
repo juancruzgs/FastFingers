@@ -8,6 +8,9 @@ import android.view.MenuItem;
 
 public class GameActivity extends ActionBarActivity implements GameFragment.OnTimeIsOverListener, LoseFragment.OnTryAgainListener{
 
+    public static final String GAME_MODE = "game_mode";
+    private static final int DEFAULT_MODE = 0;
+
     @Override
     public void onTimeIsOver(long score) {
         LoseFragment loseFragment = new LoseFragment();
@@ -31,8 +34,14 @@ public class GameActivity extends ActionBarActivity implements GameFragment.OnTi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         if (savedInstanceState == null) {
+            GameFragment gameFragment = new GameFragment();
+            int mode = getIntent().getIntExtra(GAME_MODE, DEFAULT_MODE);
+            Bundle bundle = new Bundle();
+            bundle.putInt(GameFragment.GAME_MODE, mode);
+            gameFragment.setArguments(bundle);
+
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new GameFragment())
+                    .add(R.id.container, gameFragment)
                     .commit();
         }
     }

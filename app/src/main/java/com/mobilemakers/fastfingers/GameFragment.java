@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,7 +22,9 @@ import java.util.Random;
  */
 public class GameFragment extends Fragment {
 
-    final static long TOTAL_SCORE_PER_WORD = 4000;
+    public static final String GAME_MODE = "game_mode";
+
+    final static long TIME_PER_WORD_NORMAL = 4000;
     final static long COUNT_DOWN_INTERVAL = 100;
     final static String COLOR_RED = "red";
     final static String COLOR_GREEN = "green";
@@ -31,7 +34,8 @@ public class GameFragment extends Fragment {
     Random mRandom;
     String[] mWords;
     long mScore = 0;
-    long mScorePerWord = TOTAL_SCORE_PER_WORD;
+    long mScorePerWord = TIME_PER_WORD_NORMAL;
+    int mMode = 0;
 
     OnTimeIsOverListener mCallback;
 
@@ -59,7 +63,6 @@ public class GameFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_game, container, false);
         wireUpViews(rootView);
-        startCountDown(rootView);
         prepareEditText(rootView);
         prepareInitialWord();
         return rootView;
@@ -67,12 +70,6 @@ public class GameFragment extends Fragment {
 
     private void wireUpViews(View rootView) {
         mTextViewWord = (TextView)rootView.findViewById(R.id.text_view_word);
-    }
-
-    private void startCountDown(View rootView) {
-        TextView textViewTimer = (TextView)rootView.findViewById(R.id.text_view_timer);
-        mCounter = new CountDown(textViewTimer , TOTAL_SCORE_PER_WORD, COUNT_DOWN_INTERVAL);
-        mCounter.start();
     }
 
     private void prepareEditText(View rootView) {
@@ -122,7 +119,7 @@ public class GameFragment extends Fragment {
             }
 
             private void restartCountDown() {
-                mScorePerWord = TOTAL_SCORE_PER_WORD;
+                mScorePerWord = TIME_PER_WORD_NORMAL;
                 mCounter.cancel();
                 mCounter.start();
             }
@@ -145,6 +142,25 @@ public class GameFragment extends Fragment {
         mWords = getResources().getStringArray(R.array.string_array_words);
         mRandom = new Random();
         updateRandomWordForTextView();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        retrieveGameMode();
+        startCountDown();
+    }
+
+    private void retrieveGameMode() {
+        if (getArguments().containsKey(GAME_MODE)){
+            mMode = getArguments().getInt(GAME_MODE);
+        }
+    }
+
+    private void startCountDown() {
+        TextView textViewTimer = (TextView)getActivity().findViewById(R.id.text_view_timer);
+        mCounter = new CountDown(textViewTimer , TIME_PER_WORD_NORMAL, COUNT_DOWN_INTERVAL);
+        mCounter.start();
     }
 
     @Override
