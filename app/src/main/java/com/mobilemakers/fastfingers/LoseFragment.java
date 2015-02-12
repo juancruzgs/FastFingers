@@ -15,7 +15,12 @@ import android.widget.TextView;
 public class LoseFragment extends Fragment {
 
     public static final String SCORE = "score";
-    long mScore;
+    public static final String GAME_MODE = "game_mode";
+    private static final long DEFAULT_SCORE = 0;
+
+    private static final int MODE_NORMAL = 0;
+    private static final int MODE_SURVIVAL = 1;
+    private static final int MODE_HARDCORE = 2;
 
     OnTryAgainListener mCallback;
 
@@ -59,44 +64,80 @@ public class LoseFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        retrieveScore();
-        prepareTextViewScore();
-        prepareTextViewBest();
+        long score = retrieveScore();
+        int mode = retrieveMode();
+        prepareTextViewMode(mode);
+        prepareTextViewScore(score);
+        prepareTextViewBest(score, mode);
     }
 
-    private void retrieveScore() {
+    private int retrieveMode() {
+        int mode = 0;
+        if (getArguments().containsKey(GAME_MODE)){
+            mode = getArguments().getInt(GAME_MODE);
+        }
+        return mode;
+    }
+
+    private long retrieveScore() {
+        long score = 0;
         if (getArguments().containsKey(SCORE)){
-            mScore = getArguments().getLong(SCORE);
+            score = getArguments().getLong(SCORE);
         }
-        else {
-            mScore = 0;
-        }
+        return score;
     }
 
-    private void prepareTextViewScore() {
+    private void prepareTextViewMode(int mode) {
+        TextView textViewMode = (TextView)getActivity().findViewById(R.id.text_view_mode);
+        String text;
+        switch (mode){
+            case MODE_NORMAL: text = getString(R.string.mode_normal);
+                break;
+            case MODE_SURVIVAL: text = getString(R.string.mode_survival);
+                break;
+            case MODE_HARDCORE: text = getString(R.string.mode_hardcore);
+                break;
+            default: text = getString(R.string.mode_normal);
+                break;
+        }
+        textViewMode.setText(text);
+    }
+
+    private void prepareTextViewScore(long score) {
         TextView textViewScore = (TextView)getActivity().findViewById(R.id.text_view_your_score);
-        textViewScore.setText(String.format(getString(R.string.your_score), mScore));
+        textViewScore.setText(String.format(getString(R.string.your_score), score));
     }
 
-    private void prepareTextViewBest() {
-        long bestScore = compareActualAndBestScore();
+    private void prepareTextViewBest(long score, int mode) {
+        long bestScore = compareActualAndBestScore(score, mode);
         TextView textViewBest = (TextView)getActivity().findViewById(R.id.text_view_best);
         textViewBest.setText(String.format(getString(R.string.best_score), bestScore));
     }
 
-    private long compareActualAndBestScore() {
+    private long compareActualAndBestScore(long score, int mode) {
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        long bestScore = sharedPref.getLong(getString(R.string.saved_best_score), 0);
-        if (mScore > bestScore) {
-            saveScoreAsBestScore(sharedPref);
-            bestScore = mScore;
+        String sharedPrefString;
+        switch (mode){
+            case MODE_NORMAL: sharedPrefString = getString(R.string.saved_best_score_normal);
+                break;
+            case MODE_SURVIVAL: sharedPrefString = getString(R.string.saved_best_score_survival);
+                break;
+            case MODE_HARDCORE: sharedPrefString = getString(R.string.saved_best_score_hardcore);
+                break;
+            default: sharedPrefString = getString(R.string.saved_best_score_normal);
+                break;
+        }
+        long bestScore = sharedPref.getLong(sharedPrefString, DEFAULT_SCORE);
+        if (score > bestScore) {
+            saveScoreAsBestScore(sharedPref, score, sharedPrefString);
+            bestScore = score;
         }
         return bestScore;
     }
 
-    private void saveScoreAsBestScore(SharedPreferences sharedPref) {
+    private void saveScoreAsBestScore(SharedPreferences sharedPref, long score, String sharedPrefString) {
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putLong(getString(R.string.saved_best_score), mScore);
+        editor.putLong(sharedPrefString, score);
         editor.apply();
     }
 

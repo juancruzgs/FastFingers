@@ -11,21 +11,25 @@ public class GameActivity extends ActionBarActivity implements GameFragment.OnTi
     public static final String GAME_MODE = "game_mode";
     private static final int DEFAULT_MODE = 0;
 
+    int mMode = 0;
+
     @Override
     public void onTimeIsOver(long score) {
         LoseFragment loseFragment = new LoseFragment();
         Bundle bundle = new Bundle();
         bundle.putLong(LoseFragment.SCORE, score);
+        bundle.putInt(LoseFragment.GAME_MODE, mMode);
         loseFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, loseFragment)
+                .replace(R.id.container, loseFragment)
                 .commit();
     }
 
     @Override
     public void onTryAgain() {
+        GameFragment gameFragment = createGameFragmentWithParamters();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new GameFragment())
+                .replace(R.id.container, gameFragment)
                 .commit();
     }
 
@@ -34,16 +38,20 @@ public class GameActivity extends ActionBarActivity implements GameFragment.OnTi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         if (savedInstanceState == null) {
-            GameFragment gameFragment = new GameFragment();
-            int mode = getIntent().getIntExtra(GAME_MODE, DEFAULT_MODE);
-            Bundle bundle = new Bundle();
-            bundle.putInt(GameFragment.GAME_MODE, mode);
-            gameFragment.setArguments(bundle);
-
+            mMode = getIntent().getIntExtra(GAME_MODE, DEFAULT_MODE);
+            GameFragment gameFragment = createGameFragmentWithParamters();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, gameFragment)
                     .commit();
         }
+    }
+
+    private GameFragment createGameFragmentWithParamters() {
+        GameFragment gameFragment = new GameFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(GameFragment.GAME_MODE, mMode);
+        gameFragment.setArguments(bundle);
+        return gameFragment;
     }
 
     @Override

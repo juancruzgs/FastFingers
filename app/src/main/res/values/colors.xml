@@ -13,4 +13,5 @@
     <color name="text_view_actual_score">#9b59b6</color>
     <color name="text_view_timer">#FF0000</color>
     <color name="button_text">#FFFFFF</color>
+    <color name="text_view_mode">#9b59b6</color>
 </resources>

@@ -23,9 +23,14 @@ import java.util.Random;
 public class GameFragment extends Fragment {
 
     public static final String GAME_MODE = "game_mode";
+    private static final int MODE_NORMAL = 0;
+    //private static final int MODE_SURVIVAL = 1;
+    private static final int MODE_HARDCORE = 2;
 
     final static long TIME_PER_WORD_NORMAL = 4000;
     final static long COUNT_DOWN_INTERVAL = 100;
+    final static long TIME_SURVIVAL = 30000;
+
     final static String COLOR_RED = "red";
     final static String COLOR_GREEN = "green";
 
@@ -94,7 +99,9 @@ public class GameFragment extends Fragment {
                     editTextWord.getText().clear();
                     updateScore();
                     updateRandomWordForTextView();
-                    restartCountDown();
+                    if (mMode == MODE_NORMAL){
+                        restartCountDown();
+                    }
                 } else {
                     String word = mTextViewWord.getText().toString();
                     String wordToCompare = "";
@@ -102,19 +109,25 @@ public class GameFragment extends Fragment {
                         wordToCompare = word.substring(0, s.length());
                     } catch (Exception e) {
                         //s.length > word.length
-                        editTextWord.setTextColor(Color.parseColor(COLOR_RED));
+                        incorrectWordChanges();
                     }
 
                     if (s.toString().equals(wordToCompare)) {
                         editTextWord.setTextColor(Color.parseColor(COLOR_GREEN));
                     } else {
-                        editTextWord.setTextColor(Color.parseColor(COLOR_RED));
+                        incorrectWordChanges();
                     }
                 }
             }
 
             private void updateScore() {
-                mScore += mScorePerWord;
+                if (mMode == MODE_NORMAL){
+                    mScore += mScorePerWord;
+                }
+                else {
+                    mScore += mTextViewWord.getText().toString().length()*100;
+                }
+
                 textViewActualScore.setText(String.format(getString(R.string.actual_score), mScore));
             }
 
@@ -122,6 +135,13 @@ public class GameFragment extends Fragment {
                 mScorePerWord = TIME_PER_WORD_NORMAL;
                 mCounter.cancel();
                 mCounter.start();
+            }
+
+            private void incorrectWordChanges(){
+                editTextWord.setTextColor(Color.parseColor(COLOR_RED));
+                if (mMode == MODE_HARDCORE){
+                    gameTerminated();
+                }
             }
 
         });
@@ -133,17 +153,16 @@ public class GameFragment extends Fragment {
         }
     }
 
-    private void updateRandomWordForTextView() {
-        int position = mRandom.nextInt(mWords.length);
-        mTextViewWord.setText(mWords[position]);
-    }
-
     private void prepareInitialWord() {
         mWords = getResources().getStringArray(R.array.string_array_words);
         mRandom = new Random();
         updateRandomWordForTextView();
     }
 
+    private void updateRandomWordForTextView() {
+        int position = mRandom.nextInt(mWords.length);
+        mTextViewWord.setText(mWords[position]);
+    }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -159,7 +178,16 @@ public class GameFragment extends Fragment {
 
     private void startCountDown() {
         TextView textViewTimer = (TextView)getActivity().findViewById(R.id.text_view_timer);
-        mCounter = new CountDown(textViewTimer , TIME_PER_WORD_NORMAL, COUNT_DOWN_INTERVAL);
+        long time;
+        if (mMode == MODE_NORMAL)
+        {
+            time = TIME_PER_WORD_NORMAL;
+        }
+        else {
+            time = TIME_SURVIVAL;
+        }
+
+        mCounter = new CountDown(textViewTimer , time, COUNT_DOWN_INTERVAL);
         mCounter.start();
     }
 
@@ -167,6 +195,11 @@ public class GameFragment extends Fragment {
     public void onPause() {
         super.onPause();
         mCounter.cancel();
+    }
+
+    private void gameTerminated() {
+        mCounter.cancel();
+        mCallback.onTimeIsOver(mScore);
     }
 
     private class CountDown extends CountDownTimer {
@@ -182,6 +215,7 @@ public class GameFragment extends Fragment {
         public void onTick(long millisUntilFinished) {
             String time = formatMillisecondsForDisplay(millisUntilFinished);
             mTextViewTimer.setText(time);
+            //Survival and Hardcore don't use this
             mScorePerWord -=  COUNT_DOWN_INTERVAL;
         }
 
@@ -193,8 +227,8 @@ public class GameFragment extends Fragment {
 
         @Override
         public void onFinish() {
-            cancel();
-            mCallback.onTimeIsOver(mScore);
+            gameTerminated();
         }
+
     }
 }
