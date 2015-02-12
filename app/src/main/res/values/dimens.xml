@@ -19,7 +19,7 @@
     <dimen name="text_view_your_score_text_size">30sp</dimen>
     <dimen name="button_try_again_width">250dp</dimen>
     <dimen name="button_try_again_height">80dp</dimen>
-    <dimen name="button_try_again_margin_top">30dp</dimen>
+    <dimen name="button_try_again_margin_top">15dp</dimen>
     <dimen name="button_try_again_text_size">30sp</dimen>
     <dimen name="text_view_best_text_size">30sp</dimen>
     <dimen name="text_view_mode_text_size">30sp</dimen>
