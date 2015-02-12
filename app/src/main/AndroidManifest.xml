@@ -20,7 +20,12 @@
         <activity
             android:name=".GameActivity"
             android:label="@string/title_activity_game"
-            android:theme="@style/MainActivityTheme" >
+            android:theme="@style/MainActivityTheme"
+            android:parentActivityName="com.mobilemakers.fastfingers.MainActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mobilemakers.fastfingers.MainActivity" />
         </activity>
     </application>
 
