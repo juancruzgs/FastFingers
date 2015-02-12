@@ -1,6 +1,8 @@
 package com.mobilemakers.fastfingers;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -66,6 +68,24 @@ public class LoseFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         retrieveScore();
         mTextViewScore.setText(String.format(getString(R.string.your_score), mScore));
+        long bestScore = compareActualAndBestScore();
+        mTextViewBest.setText(String.format(getString(R.string.best_score), bestScore));
+    }
+
+    private long compareActualAndBestScore() {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        long bestScore = sharedPref.getLong(getString(R.string.saved_best_score), 0);
+        if (mScore > bestScore) {
+            saveScoreAsBestScore(sharedPref);
+            bestScore = mScore;
+        }
+        return bestScore;
+    }
+
+    private void saveScoreAsBestScore(SharedPreferences sharedPref) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putLong(getString(R.string.saved_best_score), mScore);
+        editor.apply();
     }
 
     private void retrieveScore() {

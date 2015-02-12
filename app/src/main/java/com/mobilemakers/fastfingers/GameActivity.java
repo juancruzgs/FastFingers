@@ -15,7 +15,7 @@ public class GameActivity extends ActionBarActivity implements GameFragment.OnTi
         bundle.putLong(LoseFragment.SCORE, score);
         loseFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, loseFragment)
+                .add(R.id.container, loseFragment)
                 .commit();
     }
 
@@ -36,7 +36,6 @@ public class GameActivity extends ActionBarActivity implements GameFragment.OnTi
                     .commit();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -12,5 +12,8 @@
     <string name="title_activity_game">FastFingers</string>
     <string name="your_score">Your Score: %d</string>
     <string name="actual_score">Score: %d</string>
+    <string name="saved_best_score">Best Score</string>
+    <string name="saved_best_score_default">0</string>
+    <string name="best_score">Best Score: %d</string>
 
 </resources>
