@@ -96,12 +96,7 @@ public class GameFragment extends Fragment {
             public void afterTextChanged(Editable s) {
 
                 if (s.toString().equals(mTextViewWord.getText().toString())) {
-                    editTextWord.getText().clear();
-                    updateScore();
-                    updateRandomWordForTextView();
-                    if (mMode == MODE_NORMAL){
-                        restartCountDown();
-                    }
+                    correctWordActions();
                 } else {
                     String word = mTextViewWord.getText().toString();
                     String wordToCompare = "";
@@ -109,14 +104,23 @@ public class GameFragment extends Fragment {
                         wordToCompare = word.substring(0, s.length());
                     } catch (Exception e) {
                         //s.length > word.length
-                        incorrectWordChanges();
+                        incorrectWordActions();
                     }
 
                     if (s.toString().equals(wordToCompare)) {
                         editTextWord.setTextColor(Color.parseColor(COLOR_GREEN));
                     } else {
-                        incorrectWordChanges();
+                        incorrectWordActions();
                     }
+                }
+            }
+
+            private void correctWordActions() {
+                editTextWord.getText().clear();
+                updateScore();
+                updateRandomWordForTextView();
+                if (mMode == MODE_NORMAL){
+                    restartCountDown();
                 }
             }
 
@@ -137,7 +141,7 @@ public class GameFragment extends Fragment {
                 mCounter.start();
             }
 
-            private void incorrectWordChanges(){
+            private void incorrectWordActions(){
                 editTextWord.setTextColor(Color.parseColor(COLOR_RED));
                 if (mMode == MODE_HARDCORE){
                     gameTerminated();

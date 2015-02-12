@@ -109,12 +109,12 @@ public class LoseFragment extends Fragment {
     }
 
     private void prepareTextViewBest(long score, int mode) {
-        long bestScore = compareActualAndBestScore(score, mode);
+        long bestScore = retrieveBestScore(score, mode);
         TextView textViewBest = (TextView)getActivity().findViewById(R.id.text_view_best);
         textViewBest.setText(String.format(getString(R.string.best_score), bestScore));
     }
 
-    private long compareActualAndBestScore(long score, int mode) {
+    private long retrieveBestScore(long score, int mode) {
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         String sharedPrefString;
         switch (mode){

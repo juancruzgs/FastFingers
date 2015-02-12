@@ -27,7 +27,7 @@ public class GameActivity extends ActionBarActivity implements GameFragment.OnTi
 
     @Override
     public void onTryAgain() {
-        GameFragment gameFragment = createGameFragmentWithParamters();
+        GameFragment gameFragment = createGameFragmentWithArguments();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, gameFragment)
                 .commit();
@@ -39,14 +39,14 @@ public class GameActivity extends ActionBarActivity implements GameFragment.OnTi
         setContentView(R.layout.activity_game);
         if (savedInstanceState == null) {
             mMode = getIntent().getIntExtra(GAME_MODE, DEFAULT_MODE);
-            GameFragment gameFragment = createGameFragmentWithParamters();
+            GameFragment gameFragment = createGameFragmentWithArguments();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, gameFragment)
                     .commit();
         }
     }
 
-    private GameFragment createGameFragmentWithParamters() {
+    private GameFragment createGameFragmentWithArguments() {
         GameFragment gameFragment = new GameFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(GameFragment.GAME_MODE, mMode);
