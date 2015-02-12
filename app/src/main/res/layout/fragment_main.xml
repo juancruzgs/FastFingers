@@ -8,44 +8,69 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="88dp">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_normal"
-            android:id="@+id/button_normal"
-            android:background="@drawable/button_background_main"
-            android:layout_margin="8dp"
-            android:textStyle="bold"/>
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="20dp">
+            <Button
+                android:id="@+id/button_normal"
+                android:text="@string/button_normal"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:layout_width="200dp"
+                android:layout_height="45dp"
+                android:background="@drawable/buttonshape"
+                android:layout_gravity="center_horizontal" />
+        </FrameLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_time_trial"
-            android:id="@+id/button_time_trial"
-            android:background="@drawable/button_background_main"
-            android:layout_margin="8dp"
-            android:textStyle="bold"/>
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="20dp">
+            <Button
+                android:text="@string/button_time_trial"
+                android:id="@+id/button_time_trial"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:layout_width="200dp"
+                android:layout_height="45dp"
+                android:background="@drawable/buttonshape"
+                android:layout_gravity="center_horizontal" />
+        </FrameLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_survival"
-            android:id="@+id/button_survival"
-            android:background="@drawable/button_background_main"
-            android:layout_margin="8dp"
-            android:textStyle="bold"/>
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="20dp">
+            <Button
+                android:text="@string/button_survival"
+                android:id="@+id/button_survival"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:layout_width="200dp"
+                android:layout_height="45dp"
+                android:background="@drawable/buttonshape"
+                android:layout_gravity="center_horizontal" />
+        </FrameLayout>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_hardcore"
-            android:id="@+id/button_hardcore"
-            android:background="@drawable/button_background_main"
-            android:layout_margin="8dp"
-            android:textStyle="bold"/>
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <Button
+                android:text="@string/button_hardcore"
+                android:id="@+id/button_hardcore"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
+                android:layout_width="200dp"
+                android:layout_height="45dp"
+                android:background="@drawable/buttonshape"
+                android:layout_gravity="center_horizontal" />
+        </FrameLayout>
 
     </LinearLayout>
 

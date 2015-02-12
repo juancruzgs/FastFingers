@@ -1,7 +1,10 @@
 package com.mobilemakers.fastfingers;
 
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -104,6 +107,15 @@ public class GameFragment extends Fragment {
     private void setTextViewRandomWord() {
         int position = mRandom.nextInt(mWords.length);
         mTextViewWord.setText(mWords[position]);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        //AssetManager assetManager = getActivity().getAssets();
+        //Typeface tf = Typeface.createFromAsset(assetManager, "fonts/Xolonium-Regular.otf");
+        //mTextViewWord.setTypeface(tf);
+        //mTextViewTimer.setTypeface(tf);
     }
 
     private class CountDown extends CountDownTimer {

@@ -26,7 +26,8 @@
         android:id="@+id/text_view_timer"
         android:textSize="60sp"
         android:textStyle="bold"
-        android:gravity="center_horizontal"/>
+        android:gravity="center_horizontal"
+        android:textColor="#FF0000" />
 
     <EditText
         android:layout_width="match_parent"
