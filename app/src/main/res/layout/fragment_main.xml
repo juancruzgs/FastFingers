@@ -8,7 +8,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="167dp"
+        android:layout_marginBottom="@dimen/layout_main_margin_bottom"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
@@ -16,14 +16,14 @@
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="@dimen/frame_layout_margin_bottom">
             <Button
                 android:id="@+id/button_normal"
                 android:text="@string/button_normal"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp"
-                android:layout_width="200dp"
-                android:layout_height="45dp"
+                android:textColor="@color/button_text"
+                android:textSize="@dimen/button_text_size"
+                android:layout_width="@dimen/button_main_width"
+                android:layout_height="@dimen/button_main_height"
                 android:background="@drawable/button_background_main"
                 android:layout_gravity="center_horizontal" />
         </FrameLayout>
@@ -31,14 +31,14 @@
         <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="@dimen/frame_layout_margin_bottom">
             <Button
-                android:text="@string/button_survival"
                 android:id="@+id/button_survival"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp"
-                android:layout_width="200dp"
-                android:layout_height="45dp"
+                android:text="@string/button_survival"
+                android:textColor="@color/button_text"
+                android:textSize="@dimen/button_text_size"
+                android:layout_width="@dimen/button_main_width"
+                android:layout_height="@dimen/button_main_height"
                 android:background="@drawable/button_background_main"
                 android:layout_gravity="center_horizontal" />
         </FrameLayout>
@@ -49,10 +49,10 @@
             <Button
                 android:text="@string/button_hardcore"
                 android:id="@+id/button_hardcore"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp"
-                android:layout_width="200dp"
-                android:layout_height="45dp"
+                android:textColor="@color/button_text"
+                android:textSize="@dimen/button_text_size"
+                android:layout_width="@dimen/button_main_width"
+                android:layout_height="@dimen/button_main_height"
                 android:background="@drawable/button_background_main"
                 android:layout_gravity="center_horizontal" />
         </FrameLayout>

@@ -9,4 +9,8 @@
     <color name="secondary_text_main">#727272</color>
     <color name="icons_main">#FFFFFF</color>
     <color name="divider_main">#B6B6B6</color>
+
+    <color name="text_view_actual_score">#9b59b6</color>
+    <color name="text_view_timer">#FF0000</color>
+    <color name="button_text">#FFFFFF</color>
 </resources>

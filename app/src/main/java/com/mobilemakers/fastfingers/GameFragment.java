@@ -23,6 +23,8 @@ public class GameFragment extends Fragment {
 
     final static long TOTAL_SCORE_PER_WORD = 4000;
     final static long COUNT_DOWN_INTERVAL = 100;
+    final static String COLOR_RED = "red";
+    final static String COLOR_GREEN = "green";
 
     TextView mTextViewWord;
     CountDown mCounter;
@@ -41,9 +43,6 @@ public class GameFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
         try {
             mCallback = (OnTimeIsOverListener) activity;
         } catch (ClassCastException e) {
@@ -63,7 +62,6 @@ public class GameFragment extends Fragment {
         startCountDown(rootView);
         prepareEditText(rootView);
         prepareInitialWord();
-        //mScore = 0;
         return rootView;
     }
 
@@ -73,7 +71,6 @@ public class GameFragment extends Fragment {
 
     private void startCountDown(View rootView) {
         TextView textViewTimer = (TextView)rootView.findViewById(R.id.text_view_timer);
-        //mScorePerWord = TOTAL_SCORE_PER_WORD;
         mCounter = new CountDown(textViewTimer , TOTAL_SCORE_PER_WORD, COUNT_DOWN_INTERVAL);
         mCounter.start();
     }
@@ -81,9 +78,7 @@ public class GameFragment extends Fragment {
     private void prepareEditText(View rootView) {
         final EditText editTextWord = (EditText)rootView.findViewById(R.id.edit_text_insert_word);
         final TextView textViewActualScore = (TextView)rootView.findViewById(R.id.text_view_actual_score);
-        if(editTextWord.requestFocus()) {
-            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        }
+        showKeyboard(editTextWord);
         editTextWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -100,45 +95,56 @@ public class GameFragment extends Fragment {
 
                 if (s.toString().equals(mTextViewWord.getText().toString())) {
                     editTextWord.getText().clear();
-                    mScore += mScorePerWord;
-                    textViewActualScore.setText(String.format(getString(R.string.actual_score), mScore));
+                    updateScore();
+                    updateRandomWordForTextView();
                     restartCountDown();
                 } else {
                     String word = mTextViewWord.getText().toString();
-                    String wordToCompare = null;
+                    String wordToCompare = "";
                     try {
                         wordToCompare = word.substring(0, s.length());
                     } catch (Exception e) {
                         //s.length > word.length
-                        editTextWord.setTextColor(Color.parseColor("red"));
+                        editTextWord.setTextColor(Color.parseColor(COLOR_RED));
                     }
 
                     if (s.toString().equals(wordToCompare)) {
-                        editTextWord.setTextColor(Color.parseColor("green"));
+                        editTextWord.setTextColor(Color.parseColor(COLOR_GREEN));
                     } else {
-                        editTextWord.setTextColor(Color.parseColor("red"));
+                        editTextWord.setTextColor(Color.parseColor(COLOR_RED));
                     }
                 }
             }
+
+            private void updateScore() {
+                mScore += mScorePerWord;
+                textViewActualScore.setText(String.format(getString(R.string.actual_score), mScore));
+            }
+
+            private void restartCountDown() {
+                mScorePerWord = TOTAL_SCORE_PER_WORD;
+                mCounter.cancel();
+                mCounter.start();
+            }
+
         });
     }
 
-    private void restartCountDown() {
-        setTextViewRandomWord();
-        mScorePerWord = TOTAL_SCORE_PER_WORD;
-        mCounter.cancel();
-        mCounter.start();
+    private void showKeyboard(EditText editTextWord) {
+        if(editTextWord.requestFocus()) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
+    }
+
+    private void updateRandomWordForTextView() {
+        int position = mRandom.nextInt(mWords.length);
+        mTextViewWord.setText(mWords[position]);
     }
 
     private void prepareInitialWord() {
         mWords = getResources().getStringArray(R.array.string_array_words);
         mRandom = new Random();
-        setTextViewRandomWord();
-    }
-
-    private void setTextViewRandomWord() {
-        int position = mRandom.nextInt(mWords.length);
-        mTextViewWord.setText(mWords[position]);
+        updateRandomWordForTextView();
     }
 
     @Override
@@ -158,12 +164,15 @@ public class GameFragment extends Fragment {
 
         @Override
         public void onTick(long millisUntilFinished) {
+            String time = formatMillisecondsForDisplay(millisUntilFinished);
+            mTextViewTimer.setText(time);
+            mScorePerWord -=  COUNT_DOWN_INTERVAL;
+        }
+
+        private String formatMillisecondsForDisplay(long millisUntilFinished) {
             long second = (millisUntilFinished / 1000) % 60;
             long milis = (millisUntilFinished /100) % 10;
-            String time = String.format("%02d:%d", second, milis);
-            mTextViewTimer.setText(time);
-
-            mScorePerWord -=  COUNT_DOWN_INTERVAL;
+            return String.format("%02d:%d", second, milis);
         }
 
         @Override

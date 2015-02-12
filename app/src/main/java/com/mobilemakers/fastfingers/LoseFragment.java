@@ -16,8 +16,6 @@ public class LoseFragment extends Fragment {
 
     public static final String SCORE = "score";
     long mScore;
-    TextView mTextViewScore;
-    TextView mTextViewBest;
 
     OnTryAgainListener mCallback;
 
@@ -29,9 +27,6 @@ public class LoseFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
         try {
             mCallback = (OnTryAgainListener) activity;
         } catch (ClassCastException e) {
@@ -47,7 +42,11 @@ public class LoseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_time_is_over, container, false);
-        wireUpViews(rootView);
+        prepareButton(rootView);
+        return rootView;
+    }
+
+    private void prepareButton(View rootView) {
         Button buttonTryAgain = (Button)rootView.findViewById(R.id.button_try_again);
         buttonTryAgain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,21 +54,34 @@ public class LoseFragment extends Fragment {
                 mCallback.onTryAgain();
             }
         });
-        return rootView;
-    }
-
-    private void wireUpViews(View rootView) {
-        mTextViewScore = (TextView)rootView.findViewById(R.id.text_view_your_score);
-        mTextViewBest = (TextView)rootView.findViewById(R.id.text_view_best);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         retrieveScore();
-        mTextViewScore.setText(String.format(getString(R.string.your_score), mScore));
+        prepareTextViewScore();
+        prepareTextViewBest();
+    }
+
+    private void retrieveScore() {
+        if (getArguments().containsKey(SCORE)){
+            mScore = getArguments().getLong(SCORE);
+        }
+        else {
+            mScore = 0;
+        }
+    }
+
+    private void prepareTextViewScore() {
+        TextView textViewScore = (TextView)getActivity().findViewById(R.id.text_view_your_score);
+        textViewScore.setText(String.format(getString(R.string.your_score), mScore));
+    }
+
+    private void prepareTextViewBest() {
         long bestScore = compareActualAndBestScore();
-        mTextViewBest.setText(String.format(getString(R.string.best_score), bestScore));
+        TextView textViewBest = (TextView)getActivity().findViewById(R.id.text_view_best);
+        textViewBest.setText(String.format(getString(R.string.best_score), bestScore));
     }
 
     private long compareActualAndBestScore() {
@@ -88,12 +100,4 @@ public class LoseFragment extends Fragment {
         editor.apply();
     }
 
-    private void retrieveScore() {
-        if (getArguments().containsKey(SCORE)){
-            mScore = getArguments().getLong(SCORE);
-        }
-        else {
-            mScore = 0;
-        }
-    }
 }

@@ -15,5 +15,12 @@
     <string name="saved_best_score">Best Score</string>
     <string name="saved_best_score_default">0</string>
     <string name="best_score">Best Score: %d</string>
+    <string name="text_view_actual_score">Score: 0</string>
+    <string name="text_view_word">predilection</string>
+    <string name="text_view_timer">5:9</string>
+    <string name="text_view_time_is_over">Time Is Over!</string>
+    <string name="text_view_your_score">Your Score: 100</string>
+    <string name="text_view_best">Best: 200</string>
+    <string name="button_try_again">Try Again</string>
 
 </resources>
