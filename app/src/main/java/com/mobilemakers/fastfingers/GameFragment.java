@@ -125,15 +125,6 @@ public class GameFragment extends Fragment {
         mTextViewWord.setText(mWords[position]);
     }
 
-   /* @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        AssetManager assetManager = getActivity().getAssets();
-        Typeface tf = Typeface.createFromAsset(assetManager, "fonts/Xolonium-Regular.otf");
-        mTextViewWord.setTypeface(tf);
-        mTextViewTimer.setTypeface(tf);
-    }*/
-
     private class CountDown extends CountDownTimer {
 
         public CountDown(long millisInFuture, long countDownInterval) {
@@ -142,8 +133,6 @@ public class GameFragment extends Fragment {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            //mTextViewTimer.setText(String.valueOf(millisUntilFinished/1000));
-
             long second = (millisUntilFinished / 1000) % 60;
             long milis = (millisUntilFinished /100) % 10;
             String time = String.format("%02d:%d", second, milis);
@@ -156,7 +145,7 @@ public class GameFragment extends Fragment {
         @Override
         public void onFinish() {
             //TODO You Lose and show score
-            mTextViewTimer.setText("Finished");
+            mTextViewTimer.setText("You lose");
             Toast.makeText(getActivity(), String.valueOf(mScore), Toast.LENGTH_LONG).show();
             mScore = 0;
             cancel();
