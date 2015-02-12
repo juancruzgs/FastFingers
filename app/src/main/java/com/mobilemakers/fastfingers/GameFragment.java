@@ -17,9 +17,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
 /**
@@ -27,7 +24,7 @@ import java.util.Random;
  */
 public class GameFragment extends Fragment {
 
-    final static long TOTAL_SCORE_PER_WORD = 11000;
+    final static long TOTAL_SCORE_PER_WORD = 6000;
     final static long COUNT_DOWN_INTERVAL = 100;
 
     TextView mTextViewTimer;
