@@ -17,6 +17,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -109,14 +112,14 @@ public class GameFragment extends Fragment {
         mTextViewWord.setText(mWords[position]);
     }
 
-    @Override
+   /* @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //AssetManager assetManager = getActivity().getAssets();
-        //Typeface tf = Typeface.createFromAsset(assetManager, "fonts/Xolonium-Regular.otf");
-        //mTextViewWord.setTypeface(tf);
-        //mTextViewTimer.setTypeface(tf);
-    }
+        AssetManager assetManager = getActivity().getAssets();
+        Typeface tf = Typeface.createFromAsset(assetManager, "fonts/Xolonium-Regular.otf");
+        mTextViewWord.setTypeface(tf);
+        mTextViewTimer.setTypeface(tf);
+    }*/
 
     private class CountDown extends CountDownTimer {
 
@@ -126,7 +129,13 @@ public class GameFragment extends Fragment {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            mTextViewTimer.setText(String.valueOf(millisUntilFinished/1000));
+            //mTextViewTimer.setText(String.valueOf(millisUntilFinished/1000));
+
+            long second = (millisUntilFinished / 1000) % 60;
+            long milis = (millisUntilFinished /100) % 10;
+            String time = String.format("%02d:%d", second, milis);
+            mTextViewTimer.setText(time);
+
             mScorePerWord -=  COUNT_DOWN_INTERVAL;
             Log.d("mScorePerWord", String.valueOf(mScorePerWord));
         }
