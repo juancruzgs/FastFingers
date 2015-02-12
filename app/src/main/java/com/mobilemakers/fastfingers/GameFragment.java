@@ -1,10 +1,8 @@
 package com.mobilemakers.fastfingers;
 
-import android.content.res.AssetManager;
-import android.graphics.Typeface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -79,13 +77,31 @@ public class GameFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 if (s.toString().equals(mTextViewWord.getText().toString())) {
                     editTextWord.getText().clear();
-                    //TODO Calculate score based on time
                     mScore += mScorePerWord;
                     Log.d("mScore", String.valueOf(mScore));
                     restartCountDown();
                     //TODO Decrement time (create new countdown)
+                }
+                else
+                {
+                    String word = mTextViewWord.getText().toString();
+                    String wordToCompare = null;
+                    try {
+                        wordToCompare = word.substring(0,s.length());
+                    } catch (Exception e) {
+                        //s.length > word.length
+                        editTextWord.setTextColor(Color.parseColor("red"));
+                    }
+
+                    if (s.toString().equals(wordToCompare)){
+                        editTextWord.setTextColor(Color.parseColor("green"));
+                    }
+                    else {
+                        editTextWord.setTextColor(Color.parseColor("red"));
+                    }
                 }
             }
         });
