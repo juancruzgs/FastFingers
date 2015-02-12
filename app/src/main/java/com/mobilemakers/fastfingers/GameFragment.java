@@ -24,15 +24,12 @@ public class GameFragment extends Fragment {
     final static long TOTAL_SCORE_PER_WORD = 4000;
     final static long COUNT_DOWN_INTERVAL = 100;
 
-    TextView mTextViewTimer;
     TextView mTextViewWord;
-    TextView mTextViewActualScore;
-    EditText mEditTextWord;
     CountDown mCounter;
     Random mRandom;
     String[] mWords;
-    long mScore;
-    long mScorePerWord;
+    long mScore = 0;
+    long mScorePerWord = TOTAL_SCORE_PER_WORD;
 
     OnTimeIsOverListener mCallback;
 
@@ -63,31 +60,31 @@ public class GameFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_game, container, false);
         wireUpViews(rootView);
-        startCountDown();
+        startCountDown(rootView);
         prepareEditText(rootView);
         prepareInitialWord();
-        mScore = 0;
+        //mScore = 0;
         return rootView;
     }
 
     private void wireUpViews(View rootView) {
         mTextViewWord = (TextView)rootView.findViewById(R.id.text_view_word);
-        mTextViewTimer = (TextView)rootView.findViewById(R.id.text_view_timer);
-        mTextViewActualScore = (TextView)rootView.findViewById(R.id.text_view_actual_score);
     }
 
-    private void startCountDown() {
-        mScorePerWord = TOTAL_SCORE_PER_WORD;
-        mCounter = new CountDown(TOTAL_SCORE_PER_WORD, COUNT_DOWN_INTERVAL);
+    private void startCountDown(View rootView) {
+        TextView textViewTimer = (TextView)rootView.findViewById(R.id.text_view_timer);
+        //mScorePerWord = TOTAL_SCORE_PER_WORD;
+        mCounter = new CountDown(textViewTimer , TOTAL_SCORE_PER_WORD, COUNT_DOWN_INTERVAL);
         mCounter.start();
     }
 
     private void prepareEditText(View rootView) {
-        mEditTextWord = (EditText)rootView.findViewById(R.id.edit_text_insert_word);
-        if(mEditTextWord.requestFocus()) {
+        final EditText editTextWord = (EditText)rootView.findViewById(R.id.edit_text_insert_word);
+        final TextView textViewActualScore = (TextView)rootView.findViewById(R.id.text_view_actual_score);
+        if(editTextWord.requestFocus()) {
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         }
-        mEditTextWord.addTextChangedListener(new TextWatcher() {
+        editTextWord.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -102,9 +99,9 @@ public class GameFragment extends Fragment {
             public void afterTextChanged(Editable s) {
 
                 if (s.toString().equals(mTextViewWord.getText().toString())) {
-                    mEditTextWord.getText().clear();
+                    editTextWord.getText().clear();
                     mScore += mScorePerWord;
-                    mTextViewActualScore.setText(String.format(getString(R.string.actual_score), mScore));
+                    textViewActualScore.setText(String.format(getString(R.string.actual_score), mScore));
                     restartCountDown();
                 } else {
                     String word = mTextViewWord.getText().toString();
@@ -113,13 +110,13 @@ public class GameFragment extends Fragment {
                         wordToCompare = word.substring(0, s.length());
                     } catch (Exception e) {
                         //s.length > word.length
-                        mEditTextWord.setTextColor(Color.parseColor("red"));
+                        editTextWord.setTextColor(Color.parseColor("red"));
                     }
 
                     if (s.toString().equals(wordToCompare)) {
-                        mEditTextWord.setTextColor(Color.parseColor("green"));
+                        editTextWord.setTextColor(Color.parseColor("green"));
                     } else {
-                        mEditTextWord.setTextColor(Color.parseColor("red"));
+                        editTextWord.setTextColor(Color.parseColor("red"));
                     }
                 }
             }
@@ -144,10 +141,19 @@ public class GameFragment extends Fragment {
         mTextViewWord.setText(mWords[position]);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mCounter.cancel();
+    }
+
     private class CountDown extends CountDownTimer {
 
-        public CountDown(long millisInFuture, long countDownInterval) {
+        TextView mTextViewTimer;
+
+        public CountDown(TextView textView, long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
+            mTextViewTimer = textView;
         }
 
         @Override
